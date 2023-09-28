@@ -1,5 +1,6 @@
 package org.example;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.CopyMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -13,7 +14,7 @@ public class PostBot extends TelegramLongPollingBot
         var user = msg.getFrom();
         var id = user.getId();
 
-        sendText(id, msg.getText());
+        copyMessage(id, msg.getMessageId());
         System.out.println(user.getFirstName() + " wrote " + msg.getText());
 
     }
@@ -34,11 +35,29 @@ public class PostBot extends TelegramLongPollingBot
     {
         SendMessage sm = SendMessage.builder()
                 .chatId(who.toString())
-                .text(what).build();
+                .text(what)
+                .build();
         try
         {
             execute(sm);
         } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void copyMessage(Long who, Integer msgId)
+    {
+        CopyMessage cm = CopyMessage.builder()
+                .fromChatId(who.toString())
+                .chatId(who.toString())
+                .messageId(msgId)
+                .build();
+
+        try
+        {
+            execute(cm);
+        } catch (TelegramApiException e)
+        {
             throw new RuntimeException(e);
         }
     }
