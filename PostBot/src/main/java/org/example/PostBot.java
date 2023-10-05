@@ -11,9 +11,13 @@ import java.util.List;
 
 public class PostBot extends TelegramLongPollingBot
 {
-    private boolean screaming = false;
-
+    private final String name;
     private InlineKeyboardMarkup keyboardM1;
+
+    public PostBot(String token, String name) {
+        super(token);
+        this.name = name;
+    }
 
     @Override
     public void onUpdateReceived(Update update)
@@ -56,11 +60,6 @@ public class PostBot extends TelegramLongPollingBot
         return "PostBot";
     }
 
-    @Override
-    public String getBotToken()
-    {
-        return "6474374849:AAEOOTTDQaLDvgs6iXt8WYhldgYeDm5A6Xg";
-    }
 
     public void sendText(Long who, String what)
     {
