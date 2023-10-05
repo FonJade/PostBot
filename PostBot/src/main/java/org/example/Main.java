@@ -7,8 +7,6 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-
 
 public class Main
 {
@@ -17,12 +15,15 @@ public class Main
     {
         String currentDir = System.getProperty("user.dir");
         String filePath = currentDir + "\\..\\tele.key";
+
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         var data = Files.readAllLines(new File(filePath).toPath());
         var token = data.get(0);
-        System.out.println(token);
         var name = data.get(1);
-        telegramBotsApi.registerBot(new PostBot(token, name));
+
+
+        PostBot bot = new PostBot(token, name);
+        telegramBotsApi.registerBot(bot);
     }
 
 }
