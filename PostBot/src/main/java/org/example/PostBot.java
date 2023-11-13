@@ -32,17 +32,19 @@ public class PostBot extends TelegramLongPollingBot
     public void onUpdateReceived(Update update)
     {
         var msg = update.getMessage();
-        var user = msg.getFrom();
-        var id = user.getId();
 
-        copyMessage(id, msg.getMessageId());
-        System.out.println(user.getFirstName() + " wrote " + msg.getText());
-
-        if(msg.isCommand()){
-            if (msg.getText().equals("/menu"))
-                sendMenu(id, "<b>Menu 1</b>", Keyboard.getMainMenu());
-            return;
+        if (msg != null){
+            var user = msg.getFrom();
+            var id = user.getId();
+            copyMessage(id, msg.getMessageId());
+            System.out.println(user.getFirstName() + " wrote " + msg.getText());
+            if(msg.isCommand()){
+                if (msg.getText().equals("/menu"))
+                    sendMenu(id, "<b>Menu 1</b>", Keyboard.getMainMenu());
+                return;
+            }
         }
+
         var callbackQuery = update.getCallbackQuery();
         if (callbackQuery != null) {
             var data = callbackQuery.getData();
@@ -62,6 +64,8 @@ public class PostBot extends TelegramLongPollingBot
                 int userId = Integer.parseInt(vkdata.get(0));
                 var accessToken = vkdata.get(1);
                 int groupId = Integer.parseInt(vkdata.get(2));
+                System.out.println(userId);
+
                 UserActor actor = new UserActor(userId, accessToken);
 
 
