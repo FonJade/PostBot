@@ -1,19 +1,16 @@
 package org.example;
+
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
-import com.vk.api.sdk.exceptions.ApiException;
-import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
+
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.CopyMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,26 +30,37 @@ public class PostBot extends TelegramLongPollingBot
     public void onUpdateReceived(Update update)
     {
         if (update.hasMessage() && update.getMessage().hasText()){
-            msg = update.getMessage();
-            var user = msg.getFrom();
+            var nextmsg = update.getMessage();
+            var user = nextmsg.getFrom();
             var id = user.getId();
+            System.out.println(id);
+            if(nextmsg.isCommand()){
+                if (nextmsg.getText().equals("/menu"))
+                    sendMenu(id, "<b>Menu 1</b>", Keyboard.getMainMenu());
+                if (nextmsg.getText().equals("/start"))
+                    SQLiteDB.insertUser(id);
+                if (msg != null && nextmsg.getText().equals("/setTg")) {
+                    System.out.println(Long.parseLong(msg.getText()));
+                    SQLiteDB.insertTg(id, Long.parseLong(msg.getText()));
+                }
+                return;
+            }
+            msg = nextmsg;
+
             copyMessage(id, msg.getMessageId());
             sendMenu(id, "<b>Menu 1</b>", Keyboard.getMainMenu());
             System.out.println(user.getFirstName() + " wrote " + msg.getText());
-            if(msg.isCommand()){
-                if (msg.getText().equals("/menu"))
-                    sendMenu(id, "<b>Menu 1</b>", Keyboard.getMainMenu());
-                return;
-            }
+
         }
         var callbackQuery = update.getCallbackQuery();
         if (callbackQuery != null) {
             var data = callbackQuery.getData();
-            buttonTap(data,msg.getText());
+            System.out.println(msg.getText());
+            buttonTap(data, msg);
         }
     }
 
-    private void buttonTap(String data, String msg)
+    private void buttonTap(String data, Message msg)
     {
         if (data.equals("vk")) {
             VkApiClient vk = new VkApiClient(HttpTransportClient.getInstance());
@@ -79,16 +87,8 @@ public class PostBot extends TelegramLongPollingBot
             VkMessegeSender.sendMessage("Hello, VK!");
         }
         if(data.equals("telega")){
-            String currentDir = System.getProperty("user.dir");
-            String filepath = currentDir + "\\..\\Tchat.key";
-            List<String> teledata = null;
-            try {
-                teledata = Files.readAllLines(new File(filepath).toPath());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            Long teleChatId = Long.parseLong(teledata.get(0));
-            sendText(teleChatId,msg);
+            Long tgId = SQLiteDB.getTgId(msg.getFrom().getId());
+            sendText(tgId,msg.getText());
         }
     }
 

@@ -4,9 +4,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.List;
-
 public class Keyboard {
-
     public static InlineKeyboardMarkup getMainMenu() {
         var dis = InlineKeyboardButton.builder()
                 .text("Discord").callbackData("dis")

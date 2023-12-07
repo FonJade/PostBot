@@ -16,7 +16,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.9")
     implementation("org.slf4j:slf4j-simple:2.0.9")
     implementation("com.vk.api:sdk:1.0.14")
-
+    implementation ("org.xerial:sqlite-jdbc:3.42.0.0")
 
 }
 

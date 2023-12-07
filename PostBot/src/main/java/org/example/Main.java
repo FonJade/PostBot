@@ -1,5 +1,6 @@
 package org.example;
 
+
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
@@ -15,7 +16,7 @@ public class Main
     {
         String currentDir = System.getProperty("user.dir");
         String filePath = currentDir + "\\..\\tele.key";
-
+        SQLiteDB.createNewTable();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         var data = Files.readAllLines(new File(filePath).toPath());
         var token = data.get(0);
