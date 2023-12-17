@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
+import static vk.ApiAppRequests.postMessageToWall;
+
 public class PostBot extends TelegramLongPollingBot
 {
     private final String name;
@@ -65,24 +67,7 @@ public class PostBot extends TelegramLongPollingBot
     private void buttonTap(String data, Message msg)
     {
         if (data.equals("vk")) {
-            VkApiClient vk = new VkApiClient(HttpTransportClient.getInstance());
-
-            String currentDir = System.getProperty("user.dir");
-            String filepath = currentDir + "\\..\\vk.key";
-
-            List<String> vkdata = null;
-            try {
-                vkdata = Files.readAllLines(new File(filepath).toPath());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            int userId = Integer.parseInt(vkdata.get(0));
-            var accessToken = vkdata.get(1);
-            int groupId = Integer.parseInt(vkdata.get(2));
-            System.out.println(userId);
-
-            UserActor actor = new UserActor(userId, accessToken);
+            postMessageToWall(msg.getText());
 
         }
         if(data.equals("telega")){
