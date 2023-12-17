@@ -4,6 +4,8 @@ import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 
+import database.SQLiteDB;
+import models.Keyboard;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.CopyMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -82,9 +84,6 @@ public class PostBot extends TelegramLongPollingBot
 
             UserActor actor = new UserActor(userId, accessToken);
 
-
-            VkMessageSender VkMessegeSender = new VkMessageSender(vk, actor, groupId);
-            VkMessegeSender.sendMessage("Hello, VK!");
         }
         if(data.equals("telega")){
             Long tgId = SQLiteDB.getTgId(msg.getFrom().getId());

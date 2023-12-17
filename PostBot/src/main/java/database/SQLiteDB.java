@@ -1,4 +1,6 @@
-package org.example;
+package database;
+
+import database.Connect;
 
 import java.sql.*;
 
