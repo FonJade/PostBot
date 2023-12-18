@@ -12,6 +12,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jetbrains:annotations:24.0.0")
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation("org.telegram:telegrambots:6.8.0")
@@ -21,7 +22,8 @@ dependencies {
     implementation ("org.xerial:sqlite-jdbc:3.42.0.0")
     implementation("com.konghq:unirest-java:3.13.0")
     implementation("com.github.aquality-automation:aquality-selenium:3.0.0")
-
+    implementation("club.minnced:opus-java:1.1.1")
+    implementation("net.dv8tion:JDA:5.0.0-beta.18")
 
 }
 

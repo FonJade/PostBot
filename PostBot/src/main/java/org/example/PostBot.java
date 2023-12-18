@@ -1,9 +1,5 @@
 package org.example;
 
-import com.vk.api.sdk.client.VkApiClient;
-import com.vk.api.sdk.client.actors.UserActor;
-import com.vk.api.sdk.httpclient.HttpTransportClient;
-
 import database.SQLiteDB;
 import models.Keyboard;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -14,19 +10,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.List;
 
+import static discord.MessageApp.startBotWithMessage;
 import static vk.ApiAppRequests.postMessageToWall;
 
 public class PostBot extends TelegramLongPollingBot
 {
-    private final String name;
     public PostBot(String token, String name) {
         super(token);
-        this.name = name;
     }
 
     Message msg = new Message();
@@ -64,15 +55,17 @@ public class PostBot extends TelegramLongPollingBot
         }
     }
 
-    private void buttonTap(String data, Message msg)
-    {
+    private void buttonTap(String data, Message msg) {
         if (data.equals("vk")) {
             postMessageToWall(msg.getText());
 
         }
-        if(data.equals("telega")){
+        if (data.equals("telega")) {
             Long tgId = SQLiteDB.getTgId(msg.getFrom().getId());
-            sendText(tgId,msg.getText());
+            sendText(tgId, msg.getText());
+        }
+        if (data.equals("ds")) {
+            startBotWithMessage(msg.getText());
         }
     }
 

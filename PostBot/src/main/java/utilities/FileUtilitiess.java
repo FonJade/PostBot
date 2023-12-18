@@ -21,14 +21,4 @@ public class FileUtilitiess {
         }
         return properties;
     }
-
-    public static void saveBufferedImageToFile(BufferedImage image, String format){
-        try {
-            Logger.getInstance().debug("Saving buffered image to ."+format);
-            ImageIO.write(image,format, new File("target/screeshots/checked_photo."+format));
-        } catch (IOException e) {
-            Logger.getInstance().error("Image cannot be saved");
-            e.printStackTrace();
-        }
-    }
 }
