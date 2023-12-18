@@ -2,6 +2,8 @@ package utilities;
 
 import java.util.Properties;
 
+import static utilities.FileUtilitiess.loadProperties;
+
 public class Config {
     private static Properties properties;
 
@@ -9,7 +11,7 @@ public class Config {
         if (properties == null) {
             String currentDir = System.getProperty("user.dir");
             String filePath = currentDir + "\\..\\vk.key";
-            properties = FileUtilitiess.loadProperties(filePath);
+            properties = loadProperties(filePath);
             return properties.getProperty(key);
         }
         return properties.getProperty(key);

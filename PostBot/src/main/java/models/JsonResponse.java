@@ -3,8 +3,8 @@ package models;
 import kong.unirest.JsonNode;
 
 public class JsonResponse {
-    private int statusCode;
-    private JsonNode body;
+    private final int statusCode;
+    private final JsonNode body;
 
     public JsonNode getBody() {
         return body;

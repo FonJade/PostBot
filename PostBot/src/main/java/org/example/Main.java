@@ -21,10 +21,9 @@ public class Main
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         var data = Files.readAllLines(new File(filePath).toPath());
         var token = data.get(0);
-        var name = data.get(1);
 
 
-        PostBot bot = new PostBot(token, name);
+        PostBot bot = new PostBot(token);
         telegramBotsApi.registerBot(bot);
     }
 

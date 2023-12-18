@@ -16,20 +16,21 @@ import static vk.ApiAppRequests.postMessageToWall;
 
 public class PostBot extends TelegramLongPollingBot
 {
-    public PostBot(String token, String name) {
+
+    public PostBot(String token) {
         super(token);
     }
 
     Message msg = new Message();
     @Override
-    public void onUpdateReceived(Update update)
-    {
-        if (update.hasMessage() && update.getMessage().hasText()){
+    public void onUpdateReceived(Update update) {
+        boolean finished = false;
+        if (update.hasMessage() && update.getMessage().hasText()) {
             var nextmsg = update.getMessage();
             var user = nextmsg.getFrom();
             var id = user.getId();
             System.out.println(id);
-            if(nextmsg.isCommand()){
+            if (nextmsg.isCommand()) {
                 if (nextmsg.getText().equals("/menu"))
                     sendMenu(id, "<b>Menu 1</b>", Keyboard.getMainMenu());
                 if (nextmsg.getText().equals("/start"))
@@ -38,20 +39,22 @@ public class PostBot extends TelegramLongPollingBot
                     System.out.println(Long.parseLong(msg.getText()));
                     SQLiteDB.insertTg(id, Long.parseLong(msg.getText()));
                 }
-                return;
+                finished = true;
+            } else {
+                msg = nextmsg;
+                copyMessage(id, msg.getMessageId());
+                sendMenu(id, "<b>Menu 1</b>", Keyboard.getMainMenu());
+                System.out.println(user.getFirstName() + " wrote " + msg.getText());
             }
-            msg = nextmsg;
-
-            copyMessage(id, msg.getMessageId());
-            sendMenu(id, "<b>Menu 1</b>", Keyboard.getMainMenu());
-            System.out.println(user.getFirstName() + " wrote " + msg.getText());
 
         }
-        var callbackQuery = update.getCallbackQuery();
-        if (callbackQuery != null) {
-            var data = callbackQuery.getData();
-            System.out.println(msg.getText());
-            buttonTap(data, msg);
+        if (!finished) {
+            var callbackQuery = update.getCallbackQuery();
+            if (callbackQuery != null) {
+                var data = callbackQuery.getData();
+                System.out.println(msg.getText());
+                buttonTap(data, msg);
+            }
         }
     }
 

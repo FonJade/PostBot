@@ -1,18 +1,17 @@
 package database;
 
-import database.Connect;
-
 import java.sql.*;
 
 public class SQLiteDB {
-    private static String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "\\..\\DataBase.db";
+    private static final String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "\\..\\DataBase.db";
 
 
     public static void createNewTable() {
-        String sql = "CREATE TABLE IF NOT EXISTS DataBase (\n"
-                + "	userId Long PRIMARY KEY,\n"
-                + "	TgId Long\n"
-                + ");";
+        String sql = """
+                CREATE TABLE IF NOT EXISTS DataBase (
+                	userId Long PRIMARY KEY,
+                	TgId Long
+                );""";
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement()) {
