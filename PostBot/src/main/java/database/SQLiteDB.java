@@ -12,7 +12,8 @@ public class SQLiteDB {
         String sql = """
                 CREATE TABLE IF NOT EXISTS DataBase (
                 	userId Long PRIMARY KEY,
-                	TgId Long
+                	TgId Long,
+                	VkId String
                 );""";
 
         try (Connection conn = DriverManager.getConnection(url);
@@ -53,12 +54,12 @@ public class SQLiteDB {
                 + "FROM DataBase WHERE userId = ?";
         Long tgId = null;
         try (Connection conn = Connect.connect();
-             PreparedStatement preparedStatement  = conn.prepareStatement(sql)){
+             PreparedStatement pstmt  = conn.prepareStatement(sql)){
 
             // set the value
-            preparedStatement.setDouble(1,userId);
+            pstmt.setDouble(1,userId);
             //
-            ResultSet rs  = preparedStatement.executeQuery();
+            ResultSet rs  = pstmt.executeQuery();
 
             tgId = rs.getLong("TgId");
         } catch (SQLException e) {

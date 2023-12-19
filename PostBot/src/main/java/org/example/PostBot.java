@@ -26,28 +26,28 @@ public class PostBot extends TelegramLongPollingBot
     public void onUpdateReceived(Update update) {
         boolean finished = false;
         if (update.hasMessage() && update.getMessage().hasText()) {
-            var next_msg = update.getMessage();
-            var user = next_msg.getFrom();
+            var nextMsg = update.getMessage();
+            var user = nextMsg.getFrom();
             var id = user.getId();
             System.out.println(id);
-            if (next_msg.isCommand()) {
-                if (next_msg.getText().equals("/menu"))
+            if (nextMsg.isCommand()) {
+                if (nextMsg.getText().equals("/send"))
                     sendMenu(id, "<b>Menu 1</b>", Keyboard.getMainMenu());
-                if (next_msg.getText().equals("/start"))
+                if (nextMsg.getText().equals("/start"))
                     SQLiteDB.insertUser(id);
-                if (msg != null && next_msg.getText().equals("/setTg")) {
+                if (msg != null && nextMsg.getText().equals("/setTg")) {
                     System.out.println(Long.parseLong(msg.getText()));
                     SQLiteDB.insertTg(id, Long.parseLong(msg.getText()));
+                    sendText(id,"Telegram set complete");
                 }
-                if (msg != null && next_msg.getText().equals("/setVk")) {
+                if (msg != null && nextMsg.getText().equals("/setVk")) {
                     System.out.println(Long.parseLong(msg.getText()));
                     SQLiteDB.insertVk(id);
                 }
                 finished = true;
             } else {
-                msg = next_msg;
-                copyMessage(id, msg.getMessageId());
-                sendMenu(id, "<b>Menu 1</b>", Keyboard.getMainMenu());
+                msg = nextMsg;
+                sendText(id,"Message copied");
                 System.out.println(user.getFirstName() + " wrote " + msg.getText());
             }
 
@@ -58,6 +58,7 @@ public class PostBot extends TelegramLongPollingBot
                 var data = callbackQuery.getData();
                 System.out.println(msg.getText());
                 buttonTap(data, msg);
+                sendText(msg.getFrom().getId(),"Message send");
             }
         }
     }
