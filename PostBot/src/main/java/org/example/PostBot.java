@@ -67,7 +67,7 @@ public class PostBot extends TelegramLongPollingBot
             Long tgId = SQLiteDB.getTgId(msg.getFrom().getId());
             sendText(tgId, msg.getText());
         }
-        if (data.equals("ds")) {
+        if (data.equals("dis")) {
             startBotWithMessage(msg.getText());
         }
     }
