@@ -16,7 +16,7 @@ public class ApiAppRequests {
         return jsonResponse.getBody().toPrettyString();
     }
 
-    public String getOwnerId(){
+    public static String getOwnerId(){
         return ApiAppRequests.OWNER_ID;
     }
 

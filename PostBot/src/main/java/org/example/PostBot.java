@@ -26,22 +26,26 @@ public class PostBot extends TelegramLongPollingBot
     public void onUpdateReceived(Update update) {
         boolean finished = false;
         if (update.hasMessage() && update.getMessage().hasText()) {
-            var nextmsg = update.getMessage();
-            var user = nextmsg.getFrom();
+            var next_msg = update.getMessage();
+            var user = next_msg.getFrom();
             var id = user.getId();
             System.out.println(id);
-            if (nextmsg.isCommand()) {
-                if (nextmsg.getText().equals("/menu"))
+            if (next_msg.isCommand()) {
+                if (next_msg.getText().equals("/menu"))
                     sendMenu(id, "<b>Menu 1</b>", Keyboard.getMainMenu());
-                if (nextmsg.getText().equals("/start"))
+                if (next_msg.getText().equals("/start"))
                     SQLiteDB.insertUser(id);
-                if (msg != null && nextmsg.getText().equals("/setTg")) {
+                if (msg != null && next_msg.getText().equals("/setTg")) {
                     System.out.println(Long.parseLong(msg.getText()));
                     SQLiteDB.insertTg(id, Long.parseLong(msg.getText()));
                 }
+                if (msg != null && next_msg.getText().equals("/setVk")) {
+                    System.out.println(Long.parseLong(msg.getText()));
+                    SQLiteDB.insertVk(id);
+                }
                 finished = true;
             } else {
-                msg = nextmsg;
+                msg = next_msg;
                 copyMessage(id, msg.getMessageId());
                 sendMenu(id, "<b>Menu 1</b>", Keyboard.getMainMenu());
                 System.out.println(user.getFirstName() + " wrote " + msg.getText());
