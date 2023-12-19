@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 
 import static discord.MessageApp.startBotWithMessage;
+import static utilities.OpenLinkInBrowser.openDiscordLink;
 import static vk.ApiAppRequests.postMessageToWall;
 
 public class PostBot extends TelegramLongPollingBot
@@ -72,6 +73,7 @@ public class PostBot extends TelegramLongPollingBot
             sendText(tgId, msg.getText());
         }
         if (data.equals("dis")) {
+            openDiscordLink();
             startBotWithMessage(msg.getText());
         }
     }
