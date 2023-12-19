@@ -3,7 +3,6 @@ package org.example;
 import database.SQLiteDB;
 import models.Keyboard;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.CopyMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -98,22 +97,6 @@ public class PostBot extends TelegramLongPollingBot
         }
     }
 
-    public void copyMessage(Long who, Integer msgId)
-    {
-        CopyMessage cm = CopyMessage.builder()
-                .fromChatId(who.toString())
-                .chatId(who.toString())
-                .messageId(msgId)
-                .build();
-
-        try
-        {
-            execute(cm);
-        } catch (TelegramApiException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
     public void sendMenu(Long who, String txt, InlineKeyboardMarkup kb){
         SendMessage sm = SendMessage.builder().chatId(who.toString())
                 .parseMode("HTML").text(txt)
